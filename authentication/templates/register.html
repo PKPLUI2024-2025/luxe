@@ -1,5 +1,143 @@
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Jewelry - Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#AE865E',
+                        white: '#FFFFFF',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full bg-white rounded-lg overflow-hidden shadow-lg">
+            <div class="flex">
+                <!-- Left side with jewelry image -->
+                <div class="w-1/2 bg-[#e8d7d7] p-6 flex flex-col items-center">
+                    <div class="flex items-center mb-10">
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                        </svg>
+                        <span class="ml-2 text-white font-bold text-xl">Luxe Jewelry</span>
+                    </div>
+                    <img src="{% static 'images/rings.jpg' %}" alt="Jewelry" class="w-full mt-auto" 
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300?text=Jewelry+Image'">
+                </div>
+                
+                <!-- Right side with form -->
+                <div class="w-1/2 p-6">
+                    <h2 class="text-2xl font-bold text-center text-primary mb-6">Create Account</h2>
+                    
+                    <form method="post" class="space-y-4">
+                        {% csrf_token %}
+                        
+                        <!-- Full Name Field -->
+                        <div>
+                            <label for="id_username" class="block text-sm font-medium text-primary mb-1">Full Name</label>
+                            <input type="text" name="username" id="id_username" required
+                                   class="w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:border-primary"
+                                   autocomplete="username">
+                            {% if form.username.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ form.username.errors }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Email Field -->
+                        <div>
+                            <label for="id_email" class="block text-sm font-medium text-primary mb-1">Email Address</label>
+                            <input type="email" name="email" id="id_email" required
+                                   class="w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:border-primary"
+                                   autocomplete="email">
+                            {% if form.email.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ form.email.errors }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Role Field (Hidden) -->
+                        <input type="hidden" name="role" id="id_role" value="customer">
+                        
+                        <!-- Password Field -->
+                        <div class="relative">
+                            <label for="id_password1" class="block text-sm font-medium text-primary mb-1">Password</label>
+                            <div class="relative">
+                                <input type="password" name="password1" id="id_password1" required
+                                     class="w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:border-primary"
+                                     autocomplete="new-password">
+                                <button type="button" onclick="togglePassword('id_password1')" class="absolute right-0 top-2 text-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            {% if form.password1.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ form.password1.errors }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Confirm Password Field -->
+                        <div class="relative">
+                            <label for="id_password2" class="block text-sm font-medium text-primary mb-1">Confirm Password</label>
+                            <div class="relative">
+                                <input type="password" name="password2" id="id_password2" required
+                                     class="w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:border-primary"
+                                     autocomplete="new-password">
+                                <button type="button" onclick="togglePassword('id_password2')" class="absolute right-0 top-2 text-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            {% if form.password2.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ form.password2.errors }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        {% if form.non_field_errors %}
+                            <div class="text-red-500 text-sm">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="pt-4">
+                            <button type="submit" class="w-full bg-primary text-white py-3 px-4 rounded hover:bg-primary/90 transition duration-300">
+                                REGISTER
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-6">
+                        <p class="text-sm text-gray-600">
+                            Already have account? 
+                            <a href="{% url 'login' %}" class="text-primary hover:underline">Log In</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(id) {
+            const passwordInput = document.getElementById(id);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+    </script>
+</body>
+</html>
